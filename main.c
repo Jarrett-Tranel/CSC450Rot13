@@ -18,19 +18,22 @@ int main()
     printf("%d\n", IPC_CREAT);
     // shmget returns an identifier in shmid 
     int shmid = shmget(key,1024,0666|IPC_CREAT); 
-
+  
+    // shmat to attach to shared memory 
     char *str = (char*) shmat(shmid,(void*)0,0); 
-
+  
     printf("Write Data : \n"); 
-    
-    char* temp;
-    scanf("%s", temp);
-    printf("%s", temp);
-    str = encodeRot13String(temp);
-    printf("%s", str);
-    
-    
-    printf("Data written in memory: %s\n",str); 
+    scanf("%s", str);
+    sprintf(str, encodeRot13String(str));
+    //str = encodeRot13String(str);
+    //printf("%s", encodeRot13String(str));
+    //scanf("%s", str);
+    printf("Data written in memory: %s\n",str);   
+    //detach from shared memory  
+    sprintf(str, str);
+    shmdt(str); 
+  
+    return 0; 
 
 }
 
